@@ -3,7 +3,7 @@
 secure php "remember me" methodology
 
 ## what is this 
-this is just a simple secure way to add "remember me" functionality to your site.  
+this is just a simple secure way to add "remember me" functionality to your site.
 
 ## how it works
 * sets a cookie of an encoded string of your user data when the user logs in.
@@ -34,3 +34,8 @@ this is just a simple secure way to add "remember me" functionality to your site
 * cronjob sample code to help implement the removal of stale hash/string's
 * for dynamic timeouts based on agent/etc .. for reasons like tablets/phones to have a shorter expiration
 * support for more parameters for hte payload for db/index purposes
+
+
+### why?
+
+I've spent hours googling this methodology enough to predictsomething like this needs to exist.  Please if you have any comments/ideas/features let me know or even better fork this and submit pull requests.
