@@ -32,4 +32,4 @@ this is just a simple secure way revive expired sessions for as long as you want
 * support for more parameters for hte payload for db/index purposes
 
 ### why?
-I've spent hours googling this methodology enough to predictsomething like this needs to exist.  Please if you have any comments/ideas/features let me know or even better fork this and submit pull requests.
+I've spent hours googling this methodology enough to predict something like this needs to exist.  Please if you have any comments/ideas/features let me know or even better fork this and submit pull requests.
