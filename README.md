@@ -7,7 +7,7 @@ this is just a simple secure way revive expired sessions for as long as you want
 
 ## how it works
 * sets a cookie of an encoded string of some data when the user logs in.
-* stores verification stuff in the user model (security)
+* stores stuff in the user model for better verification
 * upon our normal session expiring, allows you to re-login the user
 
 ## features
