@@ -27,7 +27,7 @@ this is just a simple secure way revive expired sessions for as long as you want
 4. add code at your logout area to remove expired hash=>strings from your user model ( check logout.php )
 
 ### TODO
-* cronjob sample code to help implement the removal of stale hash/string's
+* remove expired/invalid summons upon check
 * for dynamic timeouts based on agent/etc .. for reasons like tablets/phones to have a shorter expiration
 * support for more parameters for hte payload for db/index purposes
 
