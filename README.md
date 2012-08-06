@@ -3,7 +3,7 @@
 secure php "remember me" methodology
 
 ## what is this 
-this is just a simple secure way revive expired sessions for as long as you want
+this is just a simple secure way to revive expired sessions for as long as you want
 
 ## how it works
 * sets a cookie of an encoded string of some data when the user logs in.
