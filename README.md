@@ -25,6 +25,7 @@ this is just a simple secure way revive expired sessions for as long as you want
 2. store the results of summon::set() in your user model (check login.php)
 3. add code to verify expired sessions w/ a potential re-login (check check.php)
 4. add code at your logout area to remove expired hash=>strings from your user model ( check logout.php )
+5. add a define "SUMMON_SECRET" with the value of a unique hash/string and keep it safe
 
 ### TODO
 * cronjob sample code to help implement the removal of stale hash/string's
