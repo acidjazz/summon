@@ -3,7 +3,7 @@
 secure php "remember me" methodology
 
 ## what is this 
-this is just a simple secure way revive expired sessions for as long as you want
+this is just a simple secure way to revive expired sessions for as long as you want
 
 ## how it works
 * sets a cookie of an encoded string of some data when the user logs in.
@@ -28,7 +28,7 @@ this is just a simple secure way revive expired sessions for as long as you want
 5. add a define "SUMMON_SECRET" with the value of a unique hash/string and keep it safe
 
 ### TODO
-* cronjob sample code to help implement the removal of stale hash/string's
+* remove expired/invalid summons upon check
 * for dynamic timeouts based on agent/etc .. for reasons like tablets/phones to have a shorter expiration
 * support for more parameters for hte payload for db/index purposes
 
