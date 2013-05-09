@@ -78,7 +78,7 @@ class summon {
       $summons = array_diff($summons, array($_COOKIE[self::cookie]));
     }
 
-    unset($_COOKIE[self::cookie]);
+    setcookie(self::cookie, false, time()-3600, '/');
     return $summons;
 
   }
@@ -113,7 +113,7 @@ class summon {
   }
 
   // i konw /dev/urandom is sweeter but whatever. chill out aspies.
-  private function seed() {
+  private static function seed() {
    list($usec, $sec) = explode(' ', microtime());
    mt_srand((float) $sec + ((float) $usec * 100000));
    return mt_rand();
