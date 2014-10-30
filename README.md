@@ -1,4 +1,5 @@
 # summon 
+[![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/acidjazz/summon?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 secure php "remember me" and cookie setting methodology
 
