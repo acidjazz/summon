@@ -21,6 +21,32 @@ this is just a simple secure way to set cookies and revive expired sessions for 
 * non-expensive DB lookup
   * store an indexable identifier to avoid an expensive user lookup
 
+### examples
+
+Log a user in after, assuming $user is some sort of user model :
+
+```php
+
+<?
+
+/*
+ * sample code to:
+ *  - log the user in
+ *  - set a session cookie
+ *  - store that hash/encoded string in a Summon array in the user model
+
+ * $results is an assoc array of 
+ * - 'token' set as a cookie (default named token)
+ * - 'expires' when this session expires
+ * - 'sessions' an update list of all the users sessions to store in the DB
+*/
+
+$results = Summon\Summon::set($user->id(true), $user->sessions);
+$user->sessions = $results['sessions'];
+$user->save();
+
+```
+
 ### installation
 1. modify your user table/collection to allow a small object of hash=>string
 2. store the results of summon::set() in your user model (check login.php)
@@ -29,7 +55,6 @@ this is just a simple secure way to set cookies and revive expired sessions for 
 5. add a define "SUMMON_SECRET" with the value of a unique hash/string and keep it safe
 
 
-### Examples
 
 
 
