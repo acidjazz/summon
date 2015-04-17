@@ -1,9 +1,10 @@
 {
   "name": "acidjazz/summon",
   "type": "library",
-  "description": "Simple Secure Sessioning",
+  "description": "Simply and securely handle your user sessions",
   "keywords": ["Sessions", "Session", "Sessioning", "Cookie"],
   "homepage": "https://github.com/acidjazz/summon",
+  "license": "MIT",
   "authors": [{
     "name": "Kevin Olson",
     "email": "acidjazz@gmail.com",

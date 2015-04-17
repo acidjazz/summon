@@ -1,8 +1,8 @@
 # Summon
-## Summon , Simple Secure Sessioning
+Simply and securely handle your user sessions 
+
 [![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/acidjazz/summon?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-Secure php "remember me" sessioning methodology 
 
 ### what is this 
 this is just a simple secure way to set cookies and revive expired sessions for as long as you want.  it also allows you to view and control all logged in sessions of a user and where they are coming from.
