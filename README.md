@@ -5,7 +5,7 @@ Simply and securely handle your user sessions
 [![Total Downloads](https://poser.pugx.org/acidjazz/ratchet/downloads.svg)](https://packagist.org/packages/acidjazz/ratchet)
 [![Latest Unstable Version](https://poser.pugx.org/acidjazz/ratchet/v/unstable.svg)](https://packagist.org/packages/acidjazz/ratchet)
 [![License](https://poser.pugx.org/acidjazz/ratchet/license.svg)](https://packagist.org/packages/acidjazz/ratchet)
-[![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/acidjazz/summon?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![Gitter](https://img.shields.io/badge/GITTER-join%20chat-green.svg)](https://gitter.im/acidjazz/summon?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 
 ### what is this 
