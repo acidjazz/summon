@@ -21,12 +21,11 @@ this is just a simple secure way to set cookies and revive expired sessions for 
 * non-expensive DB lookup
   * store an indexable identifier to avoid an expensive user lookup
 
-### examples
+## examples
 
-Log a user in after, assuming $user is some sort of user model :
+* Log a user in after, assuming $user is some sort of user model :
 
 ```php
-
 <?
 
 /*
@@ -44,8 +43,39 @@ Log a user in after, assuming $user is some sort of user model :
 $results = Summon\Summon::set($user->id(true), $user->sessions);
 $user->sessions = $results['sessions'];
 $user->save();
-
 ```
+
+* Check if a user is logged in:
+
+```php
+<?
+
+/* 
+  sample function to to: 
+   - verify our cookies' validity
+   - extract our cookies payload
+   - verify once more in the DB 
+*/
+
+public static function loggedIn() {
+
+  if ($data = Summon\Summon::check()) {
+
+    $user = new DBModelOfSomeSort\user($data['user_id']);
+
+    if ($user->exists() && isset($user->sessions[$data['hash']])) {
+      return $user;
+    }
+
+  }
+
+  return false;
+
+}
+```
+
+
+
 
 ### installation
 1. modify your user table/collection to allow a small object of hash=>string

@@ -1,21 +1,27 @@
 <?
 
 /* 
-  sample code to: 
-   - check for an expired session 
+  sample function to to: 
    - verify our cookies' validity
    - extract our cookies payload
    - verify once more in the DB 
-   - log back in
 */
 
-if (!isset($_SESSION['user']) && ($payload = Summon\Summon::check())) {
+public static function loggedIn() {
 
-  $user = new user($payload['user_id']);
-  if ($user->exists() && isset($user->summon[$payload['hash']])) {
-    $user->login();
+  if ($data = Summon\Summon::check()) {
+
+    $user = new DBModelOfSomeSort\user($data['user_id']);
+
+    if ($user->exists() && isset($user->sessions[$data['hash']])) {
+      return $user;
+    }
+
   }
 
+  return false;
+
 }
+
 
 
