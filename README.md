@@ -23,7 +23,7 @@ this is just a simple secure way to set cookies and revive expired sessions for 
 
 ## examples
 
-* Log a user in after, assuming $user is some sort of user model :
+Log a user in after, assuming $user is some sort of user model :
 
 ```php
 <?
@@ -45,7 +45,7 @@ $user->sessions = $results['sessions'];
 $user->save();
 ```
 
-* Check if a user is logged in:
+Check if a user is logged in:
 
 ```php
 <?
@@ -74,7 +74,14 @@ public static function loggedIn() {
 }
 ```
 
+Remove a session, logout a user
 
+```php
+<?php
+
+$user->summon = Summon\Summon::remove($user->summon);
+$user->save();
+```
 
 
 ### installation
