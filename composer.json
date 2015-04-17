@@ -12,7 +12,7 @@
   }],
   "support": {
     "issues": "https://github.com/acidjazz/summon/issues",
-    "irc": "https://gitter.im/acidjazz/summon",
+    "irc": "irc://irc.gitter.im/acidjazz/summon",
     "gitter": "https://gitter.im/acidjazz/summon"
   },
   "autoload": {
