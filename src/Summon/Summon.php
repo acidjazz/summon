@@ -7,13 +7,14 @@
  *
 */
 
-class summon {
+namespace Summon;
+
+class Summon {
 
   const method = 'AES-256-CBC'; // our cipher method
   const iv = '1234567812345678'; // initialization vector
-  const secret = SUMMON_SECRET; // password (keep this protected)
-  const expire = 60; // cookie expiration in days
-  const cookie = 'summon'; // name of our cookie
+  const expire = 60; // cookie/token expiration in days
+  const cookie = 'token'; // name of our cookie
   const VERIFY_AGENT = true; // verify our agent
 
 
@@ -25,10 +26,18 @@ class summon {
    * 
    */
   public static function set($user_id, $summons) {
-    list($hash, $encoded) = self::encrypt($user_id);
-    setcookie(self::cookie, $encoded, self::expire(), '/');
-    $summons[$hash] = $encoded;
-    return $summons;
+
+    list($hash, $token, $payload) = self::encrypt($user_id);
+    $expires = self::expire();
+    setcookie(self::cookie, $token, $expires, '/');
+    $summons[$hash] = $payload;
+
+    return [
+      'token' => $token,
+      'expires' =>  $expires,
+      'sessions' => $summons
+    ];
+
   }
 
   /* check for an existing cookie and verify its validity
@@ -37,18 +46,18 @@ class summon {
    */
   public static function check() {
 
-    if (!isset($_COOKIE[self::cookie])) {
+    if (!isset($_COOKIE[self::cookie]) && !isset($_REQUEST[self::cookie])) {
       return false;
     }
 
-    if (!$json = self::decrypt($_COOKIE[self::cookie])) {
+    $token = isset($_COOKIE[self::cookie]) ? $_COOKIE[self::cookie] : $_REQUEST[self::cookie];
+
+    if (!$payload = self::decrypt($token)) {
       return false;
     }
-
-    $payload = json_decode($json, true);
 
     // verify expiration 
-    if (!isset($payload['expire']) || time() > $payload['expire']) {
+    if (!isset($payload['expires']) || time() > $payload['expires']) {
       return false;
     }
 
@@ -83,27 +92,54 @@ class summon {
 
   }
 
+  /*
+   * clean up a list of expired payloads, this helps clean the paylaod object stored with your user document/table
+   *
+   * @param array $summons - our array of hash=>strings
+   *
+   */
+
+  public static function clean($summons) {
+
+    foreach ($summons as $hash=>$string) {
+      $payload = summon::decrypt($string);
+      $days = ($payload['expires'] -  time())/60/60/24;
+      if ($days > $payload['expires']) {
+        unset($summons[$hash]);
+      }
+    }
+
+    return $summons;
+
+  }
+
   /* encrypts and returns our encoded string and hash */
   private static function encrypt($user_id) {
 
     $hash = md5(self::seed());
 
-    $payload = json_encode(array(
-      'expire' => self::expire(),
+    $payload = [
+      'expires' => self::expire(),
       'agent' => $_SERVER['HTTP_USER_AGENT'],
+      'ip_address' => $_SERVER['REMOTE_ADDR'],
       'user_id' => $user_id,
       'hash' => $hash
-    ));
+    ];
     
-    $encoded = openssl_encrypt($payload, self::method, self::secret, false, self::iv);
+    $encoded = openssl_encrypt(json_encode($payload), self::method, $GLOBALS['cfg']['summon']['secret'], false, self::iv);
 
-    return array($hash, $encoded);
+    return [$hash, $encoded, $payload];
 
   }
 
   /* decrypts our encoded string */
-  private static function decrypt($hash) {
-    return openssl_decrypt($hash, self::method, self::secret, false, self::iv);
+  public static function decrypt($hash) {
+    if (!$json = openssl_decrypt($hash, self::method, $GLOBALS['cfg']['summon']['secret'], false, self::iv)) {
+      return false;
+    }
+
+    return json_decode($json, true);
+
   }
 
 
@@ -113,7 +149,7 @@ class summon {
   }
 
   // i konw /dev/urandom is sweeter but whatever. chill out aspies.
-  private static function seed() {
+  public static function seed() {
    list($usec, $sec) = explode(' ', microtime());
    mt_srand((float) $sec + ((float) $usec * 100000));
    return mt_rand();

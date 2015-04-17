@@ -1,7 +1,7 @@
-# summon 
+# Summon , Simple Secure Sessioning
 [![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/acidjazz/summon?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-secure php "remember me" and cookie setting methodology
+Secure php "remember me" sessioning methodology 
 
 ## what is this 
 this is just a simple secure way to set cookies and revive expired sessions for as long as you want.  it also allows you to view and control all logged in sessions of a user and where they are coming from.
@@ -12,7 +12,7 @@ this is just a simple secure way to set cookies and revive expired sessions for 
 * upon our normal session expiring, allows you to re-login the user
 
 ## features
-* multiple browser/client/etc support
+* multiple browser/client support
   * monitor and control mutiple sessions
 * multiple level verification
   * verify cookie expiration
@@ -22,11 +22,16 @@ this is just a simple secure way to set cookies and revive expired sessions for 
   * store an indexable identifier to avoid an expensive user lookup
 
 ### installation
-1. modify your user table/collection/etc to allow a small object of hash=>string
+1. modify your user table/collection to allow a small object of hash=>string
 2. store the results of summon::set() in your user model (check login.php)
 3. add code to verify expired sessions w/ a potential re-login (check check.php)
 4. add code at your logout area to remove expired hash=>strings from your user model ( check logout.php )
 5. add a define "SUMMON_SECRET" with the value of a unique hash/string and keep it safe
+
+
+### Examples
+
+
 
 ### TODO
 * remove expired/invalid summons upon check

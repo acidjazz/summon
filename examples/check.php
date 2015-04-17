@@ -1,7 +1,5 @@
 <?
 
-require_once 'lib/summon.class.php';
-
 /* 
   sample code to: 
    - check for an expired session 
@@ -11,7 +9,7 @@ require_once 'lib/summon.class.php';
    - log back in
 */
 
-if (!isset($_SESSION['user']) && ($payload = summon::check())) {
+if (!isset($_SESSION['user']) && ($payload = Summon\Summon::check())) {
 
   $user = new user($payload['user_id']);
   if ($user->exists() && isset($user->summon[$payload['hash']])) {

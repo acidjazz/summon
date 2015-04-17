@@ -1,0 +1,23 @@
+{
+  "name": "acidjazz/summon",
+  "type": "library",
+  "description": "Simple Secure Sessioning",
+  "keywords": ["Sessions", "Session", "Sessioning", "Cookie"],
+  "homepage": "https://github.com/acidjazz/summon",
+  "authors": [{
+    "name": "Kevin Olson",
+    "email": "acidjazz@gmail.com",
+    "role": "Developer"
+  }],
+  "support": {
+    "issues": "https://github.com/acidjazz/summon/issues",
+    "irc": "https://gitter.im/acidjazz/summon",
+    "gitter": "https://gitter.im/acidjazz/summon"
+  },
+  "autoload": {
+    "psr-4": { "Summon\\": "src/Summon/" }
+  },
+  "require": {
+    "php": ">=5.4"
+  }
+}
