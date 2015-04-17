@@ -1,6 +1,10 @@
 # Summon
 Simply and securely handle your user sessions 
 
+[![Latest Stable Version](https://poser.pugx.org/acidjazz/ratchet/v/stable.svg)](https://packagist.org/packages/acidjazz/ratchet)
+[![Total Downloads](https://poser.pugx.org/acidjazz/ratchet/downloads.svg)](https://packagist.org/packages/acidjazz/ratchet)
+[![Latest Unstable Version](https://poser.pugx.org/acidjazz/ratchet/v/unstable.svg)](https://packagist.org/packages/acidjazz/ratchet)
+[![License](https://poser.pugx.org/acidjazz/ratchet/license.svg)](https://packagist.org/packages/acidjazz/ratchet)
 [![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/acidjazz/summon?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 
