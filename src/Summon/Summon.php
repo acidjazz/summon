@@ -17,6 +17,9 @@ class Summon {
   const cookie = 'token'; // name of our cookie
   const VERIFY_AGENT = true; // verify our agent
 
+  // change this to something pulled in via local configuration
+  public static $secret = '31337';
+
 
   /* 
    * create our hash, set it as a cookie and return our hash and encoded string 
@@ -95,21 +98,23 @@ class Summon {
   /*
    * clean up a list of expired payloads, this helps clean the paylaod object stored with your user document/table
    *
-   * @param array $summons - our array of hash=>strings
+   * @param array $sessions - our array of hash=>strings
    *
    */
 
-  public static function clean($summons) {
+  public static function clean($sessions) {
 
-    foreach ($summons as $hash=>$string) {
-      $payload = summon::decrypt($string);
-      $days = ($payload['expires'] -  time())/60/60/24;
-      if ($days > $payload['expires']) {
-        unset($summons[$hash]);
+    if (is_array($sessions)) {
+      foreach ($sessions as $hash=>$string) {
+        $payload = self::decrypt($string);
+        $days = ($payload['expires'] -  time())/60/60/24;
+        if ($days > $payload['expires']) {
+          unset($sessions[$hash]);
+        }
       }
     }
 
-    return $summons;
+    return $sessions;
 
   }
 
@@ -126,7 +131,7 @@ class Summon {
       'hash' => $hash
     ];
     
-    $encoded = openssl_encrypt(json_encode($payload), self::method, $GLOBALS['cfg']['summon']['secret'], false, self::iv);
+    $encoded = openssl_encrypt(json_encode($payload), self::method, self::$secret, false, self::iv);
 
     return [$hash, $encoded, $payload];
 
@@ -134,7 +139,7 @@ class Summon {
 
   /* decrypts our encoded string */
   public static function decrypt($hash) {
-    if (!$json = openssl_decrypt($hash, self::method, $GLOBALS['cfg']['summon']['secret'], false, self::iv)) {
+    if (!$json = openssl_decrypt($hash, self::method, self::$secret, false, self::iv)) {
       return false;
     }
 
