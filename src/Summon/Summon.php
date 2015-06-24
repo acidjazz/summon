@@ -105,8 +105,10 @@ class Summon {
   public static function clean($sessions) {
 
     if (is_array($sessions)) {
-      foreach ($sessions as $hash=>$string) {
-        $payload = self::decrypt($string);
+      foreach ($sessions as $hash=>$payload) {
+        if (!is_array($payload) && is_string($payload)) {
+          $payload = self::decrypt($payload);
+        }
         $days = ($payload['expires'] -  time())/60/60/24;
         if ($days > $payload['expires']) {
           unset($sessions[$hash]);
