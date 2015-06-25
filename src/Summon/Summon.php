@@ -81,17 +81,23 @@ class Summon {
    * 
    * - run this when logging out
    *
-   * @param array $summons - our array of hash=>strings
+   * @param array $sessions - our array of hash=>strings
    *
    */
-  public static function remove($summons) {
 
-    if (is_array($summons) && in_array($_COOKIE[self::cookie], $summons)) {
-      $summons = array_diff($summons, array($_COOKIE[self::cookie]));
+  public static function remove($sessions) {
+
+    if (is_array($sessions)) {
+      foreach ($sessions as $key=>$session) {
+        list($hash, $token, $payload) = self::encrypt($session['user_id'], $session);
+        if ($token == $_COOKIE['token']) {
+          unset($sessions[$key]);
+        }
+      }
     }
 
     setcookie(self::cookie, false, time()-3600, '/');
-    return $summons;
+    return $sessions;
 
   }
 
@@ -121,21 +127,23 @@ class Summon {
   }
 
   /* encrypts and returns our encoded string and hash */
-  private static function encrypt($user_id) {
+  public static function encrypt($user_id, $payload=false) {
 
     $hash = md5(self::seed());
 
-    $payload = [
-      'expires' => self::expire(),
-      'agent' => $_SERVER['HTTP_USER_AGENT'],
-      'ip_address' => $_SERVER['REMOTE_ADDR'],
-      'user_id' => $user_id,
-      'hash' => $hash
-    ];
+    if ($payload === false) {
+      $payload = [
+        'expires' => self::expire(),
+        'agent' => $_SERVER['HTTP_USER_AGENT'],
+        'ip_address' => $_SERVER['REMOTE_ADDR'],
+        'user_id' => $user_id,
+        'hash' => $hash
+      ];
+    }
     
-    $encoded = openssl_encrypt(json_encode($payload), self::method, self::$secret, false, self::iv);
+    $token = openssl_encrypt(json_encode($payload), self::method, self::$secret, false, self::iv);
 
-    return [$hash, $encoded, $payload];
+    return [$hash, $token, $payload];
 
   }
 
