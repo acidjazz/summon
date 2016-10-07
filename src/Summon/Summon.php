@@ -15,7 +15,8 @@ class Summon {
   const iv = '1234567812345678'; // initialization vector
   const expire = 60; // cookie/token expiration in days
   const cookie = 'token'; // name of our cookie
-  const VERIFY_AGENT = true; // verify our agent
+
+  public static $verifyAgent = true; // verify our agent
 
   // change this to something pulled in via local configuration
   public static $secret = '31337';
@@ -65,7 +66,7 @@ class Summon {
     }
 
     // verify our agent 
-    if (self::VERIFY_AGENT) {
+    if (self::$verifyAgent) {
       if (!isset($payload['agent']) || $payload['agent'] != $_SERVER['HTTP_USER_AGENT']) {
         return false;
       }
