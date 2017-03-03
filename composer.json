@@ -16,9 +16,9 @@
     "gitter": "https://gitter.im/acidjazz/summon"
   },
   "autoload": {
-    "psr-4": { "Summon\\": "src/Summon/" }
+    "psr-4": { "Summon\\": "src/" }
   },
   "require": {
-    "php": ">=5.4"
+    "php": ">=5.6"
   }
 }
