@@ -1,4 +1,4 @@
-<?
+<?php
 
 /* 
  * minimal 'remember me' functionality
