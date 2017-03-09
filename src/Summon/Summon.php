@@ -27,13 +27,20 @@ class Summon {
    *
    * @param string $user_id - a user id of some sort to store in our payload
    * @param array $summons - our array of hash=>strings
+   * @param stdClass $browser - a laravel dusk browser instance to support unit testing
    * 
    */
-  public static function set($user_id, $summons) {
+  public static function set($user_id, $summons, $browser=false) {
 
     list($hash, $token, $payload) = self::encrypt($user_id);
     $expires = self::expire();
-    setcookie(self::cookie, $token, $expires, '/');
+
+    if ($browser !== false) {
+      $browser->plainCookie(self::cookie, $token, $expires);
+    } else {
+      setcookie(self::cookie, $token, $expires, '/');
+    }
+
     $summons[$hash] = $payload;
 
     return [
@@ -44,17 +51,22 @@ class Summon {
 
   }
 
-  /* check for an existing cookie and verify its validity
-   *
-   * - run this when your session has expired and you want to re-login
+  /* 
+   * check for an existing cookie and verify its validity
+   * @param $token - to allow manual token checking
+   * run this when your session has expired and you want to re-login
    */
-  public static function check() {
+  public static function check($token=false) {
 
     if (!isset($_COOKIE[self::cookie]) && !isset($_REQUEST[self::cookie])) {
       return false;
     }
 
-    $token = isset($_COOKIE[self::cookie]) ? $_COOKIE[self::cookie] : $_REQUEST[self::cookie];
+    if ($token === false) {
+      $token = isset($_COOKIE[self::cookie]) ? $_COOKIE[self::cookie] : $_REQUEST[self::cookie];
+    }
+
+    $token = str_replace(' ', '+', $token);
 
     if (!$payload = self::decrypt($token)) {
       return false;
@@ -83,21 +95,39 @@ class Summon {
    * - run this when logging out
    *
    * @param array $sessions - our array of hash=>strings
+   * @param stdClass $browser - a browser instance to support unit testing
    *
    */
 
-  public static function remove($sessions) {
+  public static function remove($sessions,$browser=false) {
 
     if (is_array($sessions)) {
       foreach ($sessions as $key=>$session) {
         list($hash, $token, $payload) = self::encrypt($session['user_id'], $session);
-        if ($token == $_COOKIE['token']) {
-          unset($sessions[$key]);
+
+        if ($browser !== false) {
+
+          if ($token === $browser->plainCookie(self::cookie)) {
+            unset($sessions[$key]);
+          }
+
+        } else {
+
+          if ($token === $_COOKIE[self::cookie]) {
+            unset($sessions[$key]);
+          }
+
         }
+
       }
     }
 
-    setcookie(self::cookie, false, time()-3600, '/');
+    if ($browser !== false) {
+      $browser->deleteCookie(self::cookie);
+    } else {
+      setcookie(self::cookie, false, time()-3600, '/');
+    }
+
     return $sessions;
 
   }
@@ -135,8 +165,8 @@ class Summon {
     if ($payload === false) {
       $payload = [
         'expires' => self::expire(),
-        'agent' => $_SERVER['HTTP_USER_AGENT'],
-        'ip_address' => $_SERVER['REMOTE_ADDR'],
+        'agent' => (isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : false),
+        'ip_address' => (isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : false),
         'user_id' => $user_id,
         'hash' => $hash
       ];
@@ -153,6 +183,7 @@ class Summon {
     if (!$json = openssl_decrypt($hash, self::method, self::$secret, false, self::iv)) {
       return false;
     }
+
 
     return json_decode($json, true);
 
